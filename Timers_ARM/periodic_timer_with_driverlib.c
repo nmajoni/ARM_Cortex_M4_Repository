@@ -20,14 +20,14 @@
 
 int main(void) {
 	
-	uint32_t period;
+    uint32_t period;
 
-	SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN); //System clock configuration, run at 40MHz
+    SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN); //System clock configuration, run at 40MHz
 
-	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);                                      //Enable the GPIO peripheral
-	GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2| GPIO_PIN_3);        //Enable pins as output
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);                                      //Enable the GPIO peripheral
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2| GPIO_PIN_3);        //Enable pins as output
 
-	SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);                                     //Enable the TIMER0 peripheral
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);                                     //Enable the TIMER0 peripheral
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);                                  //Enable the periodic timer mode
 
     period = (SysCtlClockGet()/1)/2;                  //Getting clock cycles for the desired frequency (1Hz) and dividing by 2 for duty cycle of 50%
