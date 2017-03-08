@@ -10,8 +10,8 @@
 
 int main(void) {
 	
-	/*configuration for the test LED*/
-	SYSCTL->RCGC2 |= (1u << 5); //enable clock on PORTF
+   /*configuration for the test LED*/
+    SYSCTL->RCGC2 |= (1u << 5); //enable clock on PORTF
     GPIOF->AFSEL &= ~LED_BLUE;  //disable alternate function for PF2 (connected blue LED)
     GPIOF->DIR    |= LED_BLUE;  //set pin as output
     GPIOF->DEN    |= LED_BLUE;  //enable digital functionality
