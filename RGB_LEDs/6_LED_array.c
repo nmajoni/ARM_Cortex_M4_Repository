@@ -16,7 +16,7 @@
 int main(void)
 {
 	uint8_t bit_pos = 2;
-    uint8_t state = 0x00u;
+        uint8_t state = 0x00u;
 
 	SysCtlClockSet(SYSCTL_SYSDIV_4|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
