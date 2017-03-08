@@ -28,16 +28,16 @@ int main(void) {
 	  disabling the analog isolation circuit associated with all inputs that are to be used, and reconfiguring
 	  the sample sequencer priorities (if needed). The initialization sequence for the ADC is as follows:*/
 
-    //step 1. Enable the ADC clock using the RCGCADC register (see page 352).
+        //step 1. Enable the ADC clock using the RCGCADC register (see page 352).
 	SYSCTL->RCGCADC |= (1u << 1);
-	//step 2. Enable the clock to the appropriate GPIO modules via the RCGCGPIO register (see page 340). To find out which GPIO ports to enable, refer to “Signal Description” on page 801.
+	//step 2. Enable the clock to the appropriate GPIO modules via the RCGCGPIO register (see page 340). To find out which GPIO ports to enable, refer to â€œSignal Descriptionâ€ on page 801.
 	SYSCTL->RCGCGPIO |= (1u << 4)|(1u << 5); //Port E and F
 
 	/*configuration for the test LEDs*/
 	GPIOF->AFSEL  &= ~LED_GREEN; //disable alternate function we wanna use digital
 	GPIOF->DIR    = 0xFF; //enable as output
 	GPIOF->DEN    = 0xFF; //enable digital functionality
-    /************************************/
+       /************************************/
 
 	//step 3. Set the GPIO AFSEL bits for the ADC input pins (see page 671). To determine which GPIOs to configure, see Table 23-4 on page 1344.
 	GPIOE->AFSEL  = ANALOG_IN;
@@ -47,10 +47,10 @@ int main(void) {
 	//step 5. Disable the analog isolation circuit for all ADC input pins that are to be used by writing a 1 to the appropriate bits of the GPIOAMSEL register (see page 687) in the associated GPIO block.
 	GPIOE->AMSEL = ANALOG_IN;
 	//step 6. If required by the application, reconfigure the sample sequencer priorities in the ADCSSPRI register. The default configuration has Sample Sequencer 0 with the highest priority and Sample
-    //        Sequencer 3 as the lowest priority.
-    /*not required for now*/
+        //        Sequencer 3 as the lowest priority.
+       /*not required for now*/
 
-    /*Sample Sequencer Configuration*/
+        /*Sample Sequencer Configuration*/
 
 	//step 1. Ensure that the sample sequencer is disabled by clearing the corresponding ASENn bit in the ADCACTSS register. Programming of the sample sequencers is allowed without having them
 	//enabled. Disabling the sequencer during programming prevents erroneous execution if a trigger event were to occur during the configuration process.
@@ -68,9 +68,9 @@ int main(void) {
 	//step 6. If interrupts are to be used, set the corresponding MASK bit in the ADCIM register.
 	ADC1->IM = (1u << 3);
 	//step 7. Enable the sample seq  on
-    ADC1->ISC = (1u << 3); //Interrupt Status and Clear. This bit is cleared by writing a 1. Clearing this bit also clears the INR3 (Raw Interrupt Status) bit in the ADCRIS register which says conversion complete
+        ADC1->ISC = (1u << 3); //Interrupt Status and Clear. This bit is cleared by writing a 1. Clearing this bit also clears the INR3 (Raw Interrupt Status) bit in the ADCRIS register which says conversion complete
 
-    NVIC_EnableIRQ( ADC1SS3_IRQn); //Enable interrupt request for sequence sampler 3
+        NVIC_EnableIRQ( ADC1SS3_IRQn); //Enable interrupt request for sequence sampler 3
 
 	while(1){
 	
