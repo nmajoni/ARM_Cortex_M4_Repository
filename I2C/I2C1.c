@@ -1,11 +1,16 @@
 
-
+/*
+ *
+ * Author: Nyasha Godknows Majoni
+ * Embedded Software Developer
+ * Ingolstadt, Bayern
+ * Germany
+ *
+ */
 
 
 #include "tm4c_cmsis.h"
 #include "stdbool.h"
-//#include "TM4C123GH6PM.h"
-
 
 #define TRANSMIT (I2C1_MASTER->MSA &= ~(1U << 0))
 #define RECEIVE  (I2C1_MASTER->MSA |= (1U << 0))
@@ -22,7 +27,6 @@ void I2C1_setRW(bool mode);
 void I2C1_TransmitByte(uint8_t data, uint8_t conditions);
 void I2C1_init(void);
 
-
 /*
  * main.c
  */
@@ -36,10 +40,10 @@ int main(void) {
 
     while(1){
 
-        I2C1_TransmitByte(0x09, (1U << 0)|(1U << 1));
-        I2C1_TransmitByte(LEDs++, (1U << 0)|(1U << 2));
+        I2C1_TransmitByte(0x09, (1U << 0)|(1U << 1));   //0x09 is the address of the GPIO register of the IO Expander
+        I2C1_TransmitByte(LEDs++, (1U << 0)|(1U << 2)); //write to the register
 
-        for(int i = 0; i < 1000000; i++){}
+        for(int i = 0; i < 1000000; i++){}              
     }
 	return 0;
 
@@ -82,7 +86,6 @@ void I2C1_init(void){
 
 }
 
-
 /**
  * @brief   sets the slave address
  * @param[in]  slaveAddress    slave address
@@ -93,7 +96,6 @@ void I2C1_setSlaveAddress(uint8_t slaveAddress){
     I2C1_MASTER->MSA = (slaveAddress << 1);
 }
 
-
 /**
  * @brief   sets the mode ie. Read or Write data
  * @param[in]  mode   O for write and 1 for read
@@ -102,7 +104,6 @@ void I2C1_setRW(bool mode){
 
     mode ? RECEIVE : TRANSMIT;
 }
-
 
 /**
  * @brief   function to transmit a byte of data
