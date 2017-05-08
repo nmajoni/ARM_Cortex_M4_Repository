@@ -1,7 +1,12 @@
 
-
-
-
+/*
+ *
+ * Author: Nyasha Godknows Majoni
+ * Embedded Software Developer
+ * Ingolstadt, Bayern
+ * Germany
+ *
+ */
 
 #include "TM4C123GH6PM.h"
 
@@ -51,29 +56,29 @@ int main(void) {
 
 void SSI2_init(void){
 
-	//Initialization and Configuration
-	/**
-	 * To enable and initialize the SSI, the following steps from the datasheet are necessary:
-	 */
+   //Initialization and Configuration
+   /**
+    * To enable and initialize the SSI, the following steps from the datasheet are necessary:
+    */
 
-	/*step 1. Enable the SSI module using the RCGCSSI register (see page 346).*/
-	*((uint32_t *)0x400FE61C) = (1U << 2);  //SSI module 2
+     /*step 1. Enable the SSI module using the RCGCSSI register (see page 346).*/
+    *((uint32_t *)0x400FE61C) = (1U << 2);  //SSI module 2
 
-	/*step 2. Enable the clock to the appropriate GPIO module via the RCGCGPIO register (see page 340). To find out which GPIO port to enable, refer to Table 23-5 on page 1351.*/
+    /*step 2. Enable the clock to the appropriate GPIO module via the RCGCGPIO register (see page 340). To find out which GPIO port to enable, refer to Table 23-5 on page 1351.*/
     SYSCTL->RCGC2 = (1U << 1);              //GPIOB
 
-	/*step 3. Set the GPIO AFSEL bits for the appropriate pins (see page 671). To determine which GPIOs to configure, see Table 23-4 on page 1344.*/
+    /*step 3. Set the GPIO AFSEL bits for the appropriate pins (see page 671). To determine which GPIOs to configure, see Table 23-4 on page 1344.*/
     GPIOB->AFSEL |= SSI2CLK | SSI2Rx | SSI2Tx;
     GPIOB->AFSEL &= ~SSI2Fss;   //for controlling the CS (chip select) line
 
-	/*step 4. Configure the PMCn fields in the GPIOPCTL register to assign the SSI signals to the appropriate pins. See page 688 and Table 23-5 on page 1351.*/
+    /*step 4. Configure the PMCn fields in the GPIOPCTL register to assign the SSI signals to the appropriate pins. See page 688 and Table 23-5 on page 1351.*/
     GPIOB->PCTL   = (2U << 28) | (2U << 24) | (2U << 20) | (2U << 16);  //PMC[4:7]
 
-	/*step 5. Program the GPIODEN register to enable the pin's digital function. In addition, the drive strength,
-		drain select and pull-up/pull-down functions must be configured. Refer to “General-Purpose Input/Outputs (GPIOs)” on page 649 for more information.
-		Note: Pull-ups can be used to avoid unnecessary toggles on the SSI pins, which can take the slave to a wrong state. In addition, if the SSIClk signal is programmed to steady state
-		High through the SPO bit in the SSICR0 register, then software must also configure the GPIO port pin corresponding to the SSInClk signal as a pull-up in the GPIO Pull-Up Select (GPIOPUR) register.
-	*/
+    /*step 5. Program the GPIODEN register to enable the pin's digital function. In addition, the drive strength,
+	drain select and pull-up/pull-down functions must be configured. Refer to “General-Purpose Input/Outputs (GPIOs)” on page 649 for more information.
+	Note: Pull-ups can be used to avoid unnecessary toggles on the SSI pins, which can take the slave to a wrong state. In addition, if the SSIClk signal is programmed to steady state
+	High through the SPO bit in the SSICR0 register, then software must also configure the GPIO port pin corresponding to the SSInClk signal as a pull-up in the GPIO Pull-Up Select (GPIOPUR) register.
+    */
     GPIOB->DEN |= SSI2CLK | SSI2Fss | SSI2Rx | SSI2Tx;
     GPIOB->DIR |= SSI2Fss;   //SS/CS set high
 
@@ -87,7 +92,7 @@ void SSI2_init(void){
 		a. For master operations, set the SSICR1 register to 0x0000.0000.
 		b. For slave mode (output enabled), set the SSICR1 register to 0x0000.0004.
 		c. For slave mode (output disabled), set the SSICR1 register to 0x0000.000C.
-	*/
+   */
     SSI2->CR1 = 0x00;
 
     /*step 3. Configure the SSI clock source by writing to the SSICC register.*/
@@ -120,6 +125,6 @@ void SSI2_init(void){
 
 void spi_send(uint8_t data){
 
-	SSI2->DR = data;
-	 while((SSI2->SR & (1<<0)) == 0); //wait for transmit FIFO to be empty. SR will have a "1"
+    SSI2->DR = data;
+    while((SSI2->SR & (1<<0)) == 0); //wait for transmit FIFO to be empty. SR will have a "1"
 }
